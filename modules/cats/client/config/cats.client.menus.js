@@ -21,5 +21,11 @@
       state: 'cats.list',
       roles: ['*']
     });
+
+    menuService.addSubMenuItem('topbar', 'cats', {
+      title: 'Submit a Cat',
+      state: 'submit.cat',
+      roles: ['admin', 'user']
+    });
   }
 }());

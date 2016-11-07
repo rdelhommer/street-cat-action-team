@@ -34,6 +34,20 @@
         data: {
           pageTitle: 'Cat {{ catResolve.title }}'
         }
+      })
+      .state('submit', {
+        abstract: true,
+        url: '/submit',
+        template: '<ui-view/>'
+      })
+      .state('submit.cat', {
+        url: '',
+        templateUrl: '/modules/cats/client/views/submit-cat.client.view.html',
+        controller: 'CatsSubmitController',
+        controllerAs: 'vm',
+        data: {
+          pageTitle: 'Submit a Cat'
+        }
       });
   }
 
