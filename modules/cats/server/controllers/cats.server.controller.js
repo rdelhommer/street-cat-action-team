@@ -13,7 +13,7 @@ var path = require('path'),
  */
 exports.create = function (req, res) {
   var cat = new Cat(req.body);
-  cat.user = req.user;
+  cat.submittingUser = req.user;
 
   cat.save(function (err) {
     if (err) {
