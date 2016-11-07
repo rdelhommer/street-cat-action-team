@@ -9,10 +9,15 @@
 
   function SubmitCatService($log, $http) {
     return {
-      addCat: function(name) {
+      addCat: function(name, pictureUrl) {
         var catObj = {
-          name: name
+          name: name,
+          pictureUrl: []
         };
+
+        if (pictureUrl) {
+          catObj.pictureUrl.push(pictureUrl);
+        }
 
         var res = $http.post('/api/cats', catObj);
 
@@ -21,7 +26,7 @@
         });
 
         res.error(function(data, status, headers, config) {
-          $log.error("failure message: " + JSON.stringify({ data: data }));
+          $log.error('failure message: ' + JSON.stringify({ data: data }));
         });
       }
     };

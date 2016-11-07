@@ -1,0 +1,16 @@
+(function () {
+  'use strict';
+
+  angular.module('core')
+    .directive('pictureUploader', pictureUploader);
+
+  function pictureUploader() {
+    var directive = {
+      restrict: 'E',
+      controller: 'PictureUploaderController',
+      templateUrl: '/modules/core/client/views/picture-uploader.client.view.html'
+    };
+
+    return directive;
+  }
+}());
