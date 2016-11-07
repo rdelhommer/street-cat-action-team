@@ -2,64 +2,64 @@
   'use strict';
 
   angular
-    .module('articles.admin.routes')
+    .module('cats.admin.routes')
     .config(routeConfig);
 
   routeConfig.$inject = ['$stateProvider'];
 
   function routeConfig($stateProvider) {
     $stateProvider
-      .state('admin.articles', {
+      .state('admin.cats', {
         abstract: true,
-        url: '/articles',
+        url: '/cats',
         template: '<ui-view/>'
       })
-      .state('admin.articles.list', {
+      .state('admin.cats.list', {
         url: '',
-        templateUrl: '/modules/articles/client/views/admin/list-articles.client.view.html',
-        controller: 'ArticlesAdminListController',
+        templateUrl: '/modules/cats/client/views/admin/list-cats.client.view.html',
+        controller: 'CatsAdminListController',
         controllerAs: 'vm',
         data: {
           roles: ['admin']
         }
       })
-      .state('admin.articles.create', {
+      .state('admin.cats.create', {
         url: '/create',
-        templateUrl: '/modules/articles/client/views/admin/form-article.client.view.html',
-        controller: 'ArticlesAdminController',
+        templateUrl: '/modules/cats/client/views/admin/form-cat.client.view.html',
+        controller: 'CatsAdminController',
         controllerAs: 'vm',
         data: {
           roles: ['admin']
         },
         resolve: {
-          articleResolve: newArticle
+          catResolve: newCat
         }
       })
-      .state('admin.articles.edit', {
-        url: '/:articleId/edit',
-        templateUrl: '/modules/articles/client/views/admin/form-article.client.view.html',
-        controller: 'ArticlesAdminController',
+      .state('admin.cats.edit', {
+        url: '/:catId/edit',
+        templateUrl: '/modules/cats/client/views/admin/form-cat.client.view.html',
+        controller: 'CatsAdminController',
         controllerAs: 'vm',
         data: {
           roles: ['admin']
         },
         resolve: {
-          articleResolve: getArticle
+          catResolve: getCat
         }
       });
   }
 
-  getArticle.$inject = ['$stateParams', 'ArticlesService'];
+  getCat.$inject = ['$stateParams', 'CatsService'];
 
-  function getArticle($stateParams, ArticlesService) {
-    return ArticlesService.get({
-      articleId: $stateParams.articleId
+  function getCat($stateParams, CatsService) {
+    return CatsService.get({
+      catId: $stateParams.catId
     }).$promise;
   }
 
-  newArticle.$inject = ['ArticlesService'];
+  newCat.$inject = ['CatsService'];
 
-  function newArticle(ArticlesService) {
-    return new ArticlesService();
+  function newCat(CatsService) {
+    return new CatsService();
   }
 }());

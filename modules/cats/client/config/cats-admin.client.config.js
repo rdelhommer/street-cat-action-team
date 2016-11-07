@@ -1,17 +1,17 @@
 ﻿(function () {
   'use strict';
 
-  // Configuring the Articles Admin module
+  // Configuring the Cats Admin module
   angular
-    .module('articles.admin')
+    .module('cats.admin')
     .run(menuConfig);
 
   menuConfig.$inject = ['menuService'];
 
   function menuConfig(Menus) {
     Menus.addSubMenuItem('topbar', 'admin', {
-      title: 'Manage Articles',
-      state: 'admin.articles.list'
+      title: 'Manage Cats',
+      state: 'admin.cats.list'
     });
   }
 }());

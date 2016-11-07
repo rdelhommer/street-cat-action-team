@@ -5,113 +5,113 @@
  */
 var path = require('path'),
   mongoose = require('mongoose'),
-  Article = mongoose.model('Article'),
+  Cat = mongoose.model('Cat'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
- * Create an article
+ * Create a cat
  */
 exports.create = function (req, res) {
-  var article = new Article(req.body);
-  article.user = req.user;
+  var cat = new Cat(req.body);
+  cat.user = req.user;
 
-  article.save(function (err) {
+  cat.save(function (err) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(article);
+      res.json(cat);
     }
   });
 };
 
 /**
- * Show the current article
+ * Show the current cat
  */
 exports.read = function (req, res) {
   // convert mongoose document to JSON
-  var article = req.article ? req.article.toJSON() : {};
+  var cat = req.cat ? req.cat.toJSON() : {};
 
-  // Add a custom field to the Article, for determining if the current User is the "owner".
-  // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
-  article.isCurrentUserOwner = !!(req.user && article.user && article.user._id.toString() === req.user._id.toString());
+  // Add a custom field to the Cat, for determining if the current User is the "owner".
+  // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Cat model.
+  cat.isCurrentUserOwner = !!(req.user && cat.user && cat.user._id.toString() === req.user._id.toString());
 
-  res.json(article);
+  res.json(cat);
 };
 
 /**
- * Update an article
+ * Update an cat
  */
 exports.update = function (req, res) {
-  var article = req.article;
+  var cat = req.cat;
 
-  article.title = req.body.title;
-  article.content = req.body.content;
+  cat.title = req.body.title;
+  cat.content = req.body.content;
 
-  article.save(function (err) {
+  cat.save(function (err) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(article);
+      res.json(cat);
     }
   });
 };
 
 /**
- * Delete an article
+ * Delete an cat
  */
 exports.delete = function (req, res) {
-  var article = req.article;
+  var cat = req.cat;
 
-  article.remove(function (err) {
+  cat.remove(function (err) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(article);
+      res.json(cat);
     }
   });
 };
 
 /**
- * List of Articles
+ * List of Cats
  */
 exports.list = function (req, res) {
-  Article.find().sort('-created').populate('user', 'displayName').exec(function (err, articles) {
+  Cat.find().sort('-created').populate('user', 'displayName').exec(function (err, cats) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(articles);
+      res.json(cats);
     }
   });
 };
 
 /**
- * Article middleware
+ * Cat middleware
  */
-exports.articleByID = function (req, res, next, id) {
+exports.catByID = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
-      message: 'Article is invalid'
+      message: 'Cat is invalid'
     });
   }
 
-  Article.findById(id).populate('user', 'displayName').exec(function (err, article) {
+  Cat.findById(id).populate('user', 'displayName').exec(function (err, cat) {
     if (err) {
       return next(err);
-    } else if (!article) {
+    } else if (!cat) {
       return res.status(404).send({
-        message: 'No article with that identifier has been found'
+        message: 'No cat with that identifier has been found'
       });
     }
-    req.article = article;
+    req.cat = cat;
     next();
   });
 };

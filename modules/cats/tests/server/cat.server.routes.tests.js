@@ -5,7 +5,7 @@ var should = require('should'),
   path = require('path'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
-  Article = mongoose.model('Article'),
+  Cat = mongoose.model('Cat'),
   express = require(path.resolve('./config/lib/express'));
 
 /**
@@ -15,12 +15,12 @@ var app,
   agent,
   credentials,
   user,
-  article;
+  cat;
 
 /**
- * Article routes tests
+ * Cat routes tests
  */
-describe('Article CRUD tests', function () {
+describe('Cat CRUD tests', function () {
 
   before(function (done) {
     // Get application
@@ -48,18 +48,18 @@ describe('Article CRUD tests', function () {
       provider: 'local'
     });
 
-    // Save a user to the test db and create new article
+    // Save a user to the test db and create new cat
     user.save(function () {
-      article = {
-        title: 'Article Title',
-        content: 'Article Content'
+      cat = {
+        title: 'Cat Title',
+        content: 'Cat Content'
       };
 
       done();
     });
   });
 
-  it('should not be able to save an article if logged in without the "admin" role', function (done) {
+  it('should not be able to save an cat if logged in without the "admin" role', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -69,28 +69,28 @@ describe('Article CRUD tests', function () {
           return done(signinErr);
         }
 
-        agent.post('/api/articles')
-          .send(article)
+        agent.post('/api/cats')
+          .send(cat)
           .expect(403)
-          .end(function (articleSaveErr, articleSaveRes) {
+          .end(function (catSaveErr, catSaveRes) {
             // Call the assertion callback
-            done(articleSaveErr);
+            done(catSaveErr);
           });
 
       });
   });
 
-  it('should not be able to save an article if not logged in', function (done) {
-    agent.post('/api/articles')
-      .send(article)
+  it('should not be able to save an cat if not logged in', function (done) {
+    agent.post('/api/cats')
+      .send(cat)
       .expect(403)
-      .end(function (articleSaveErr, articleSaveRes) {
+      .end(function (catSaveErr, catSaveRes) {
         // Call the assertion callback
-        done(articleSaveErr);
+        done(catSaveErr);
       });
   });
 
-  it('should not be able to update an article if signed in without the "admin" role', function (done) {
+  it('should not be able to update an cat if signed in without the "admin" role', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -100,24 +100,24 @@ describe('Article CRUD tests', function () {
           return done(signinErr);
         }
 
-        agent.post('/api/articles')
-          .send(article)
+        agent.post('/api/cats')
+          .send(cat)
           .expect(403)
-          .end(function (articleSaveErr, articleSaveRes) {
+          .end(function (catSaveErr, catSaveRes) {
             // Call the assertion callback
-            done(articleSaveErr);
+            done(catSaveErr);
           });
       });
   });
 
-  it('should be able to get a list of articles if not signed in', function (done) {
-    // Create new article model instance
-    var articleObj = new Article(article);
+  it('should be able to get a list of cats if not signed in', function (done) {
+    // Create new cat model instance
+    var catObj = new Cat(cat);
 
-    // Save the article
-    articleObj.save(function () {
-      // Request articles
-      request(app).get('/api/articles')
+    // Save the cat
+    catObj.save(function () {
+      // Request cats
+      request(app).get('/api/cats')
         .end(function (req, res) {
           // Set assertion
           res.body.should.be.instanceof(Array).and.have.lengthOf(1);
@@ -129,16 +129,16 @@ describe('Article CRUD tests', function () {
     });
   });
 
-  it('should be able to get a single article if not signed in', function (done) {
-    // Create new article model instance
-    var articleObj = new Article(article);
+  it('should be able to get a single cat if not signed in', function (done) {
+    // Create new cat model instance
+    var catObj = new Cat(cat);
 
-    // Save the article
-    articleObj.save(function () {
-      request(app).get('/api/articles/' + articleObj._id)
+    // Save the cat
+    catObj.save(function () {
+      request(app).get('/api/cats/' + catObj._id)
         .end(function (req, res) {
           // Set assertion
-          res.body.should.be.instanceof(Object).and.have.property('title', article.title);
+          res.body.should.be.instanceof(Object).and.have.property('title', cat.title);
 
           // Call the assertion callback
           done();
@@ -146,31 +146,31 @@ describe('Article CRUD tests', function () {
     });
   });
 
-  it('should return proper error for single article with an invalid Id, if not signed in', function (done) {
+  it('should return proper error for single cat with an invalid Id, if not signed in', function (done) {
     // test is not a valid mongoose Id
-    request(app).get('/api/articles/test')
+    request(app).get('/api/cats/test')
       .end(function (req, res) {
         // Set assertion
-        res.body.should.be.instanceof(Object).and.have.property('message', 'Article is invalid');
+        res.body.should.be.instanceof(Object).and.have.property('message', 'Cat is invalid');
 
         // Call the assertion callback
         done();
       });
   });
 
-  it('should return proper error for single article which doesnt exist, if not signed in', function (done) {
-    // This is a valid mongoose Id but a non-existent article
-    request(app).get('/api/articles/559e9cd815f80b4c256a8f41')
+  it('should return proper error for single cat which doesnt exist, if not signed in', function (done) {
+    // This is a valid mongoose Id but a non-existent cat
+    request(app).get('/api/cats/559e9cd815f80b4c256a8f41')
       .end(function (req, res) {
         // Set assertion
-        res.body.should.be.instanceof(Object).and.have.property('message', 'No article with that identifier has been found');
+        res.body.should.be.instanceof(Object).and.have.property('message', 'No cat with that identifier has been found');
 
         // Call the assertion callback
         done();
       });
   });
 
-  it('should not be able to delete an article if signed in without the "admin" role', function (done) {
+  it('should not be able to delete an cat if signed in without the "admin" role', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -180,40 +180,40 @@ describe('Article CRUD tests', function () {
           return done(signinErr);
         }
 
-        agent.post('/api/articles')
-          .send(article)
+        agent.post('/api/cats')
+          .send(cat)
           .expect(403)
-          .end(function (articleSaveErr, articleSaveRes) {
+          .end(function (catSaveErr, catSaveRes) {
             // Call the assertion callback
-            done(articleSaveErr);
+            done(catSaveErr);
           });
       });
   });
 
-  it('should not be able to delete an article if not signed in', function (done) {
-    // Set article user
-    article.user = user;
+  it('should not be able to delete an cat if not signed in', function (done) {
+    // Set cat user
+    cat.user = user;
 
-    // Create new article model instance
-    var articleObj = new Article(article);
+    // Create new cat model instance
+    var catObj = new Cat(cat);
 
-    // Save the article
-    articleObj.save(function () {
-      // Try deleting article
-      request(app).delete('/api/articles/' + articleObj._id)
+    // Save the cat
+    catObj.save(function () {
+      // Try deleting cat
+      request(app).delete('/api/cats/' + catObj._id)
         .expect(403)
-        .end(function (articleDeleteErr, articleDeleteRes) {
+        .end(function (catDeleteErr, catDeleteRes) {
           // Set message assertion
-          (articleDeleteRes.body.message).should.match('User is not authorized');
+          (catDeleteRes.body.message).should.match('User is not authorized');
 
-          // Handle article error error
-          done(articleDeleteErr);
+          // Handle cat error error
+          done(catDeleteErr);
         });
 
     });
   });
 
-  it('should be able to get a single article that has an orphaned user reference', function (done) {
+  it('should be able to get a single cat that has an orphaned user reference', function (done) {
     // Create orphan user creds
     var _creds = {
       usernameOrEmail: 'orphan',
@@ -250,22 +250,22 @@ describe('Article CRUD tests', function () {
           // Get the userId
           var orphanId = orphan._id;
 
-          // Save a new article
-          agent.post('/api/articles')
-            .send(article)
+          // Save a new cat
+          agent.post('/api/cats')
+            .send(cat)
             .expect(200)
-            .end(function (articleSaveErr, articleSaveRes) {
-              // Handle article save error
-              if (articleSaveErr) {
-                return done(articleSaveErr);
+            .end(function (catSaveErr, catSaveRes) {
+              // Handle cat save error
+              if (catSaveErr) {
+                return done(catSaveErr);
               }
 
-              // Set assertions on new article
-              (articleSaveRes.body.title).should.equal(article.title);
-              should.exist(articleSaveRes.body.user);
-              should.equal(articleSaveRes.body.user._id, orphanId);
+              // Set assertions on new cat
+              (catSaveRes.body.title).should.equal(cat.title);
+              should.exist(catSaveRes.body.user);
+              should.equal(catSaveRes.body.user._id, orphanId);
 
-              // force the article to have an orphaned user reference
+              // force the cat to have an orphaned user reference
               orphan.remove(function () {
                 // now signin with valid user
                 agent.post('/api/auth/signin')
@@ -277,19 +277,19 @@ describe('Article CRUD tests', function () {
                       return done(err);
                     }
 
-                    // Get the article
-                    agent.get('/api/articles/' + articleSaveRes.body._id)
+                    // Get the cat
+                    agent.get('/api/cats/' + catSaveRes.body._id)
                       .expect(200)
-                      .end(function (articleInfoErr, articleInfoRes) {
-                        // Handle article error
-                        if (articleInfoErr) {
-                          return done(articleInfoErr);
+                      .end(function (catInfoErr, catInfoRes) {
+                        // Handle cat error
+                        if (catInfoErr) {
+                          return done(catInfoErr);
                         }
 
                         // Set assertions
-                        (articleInfoRes.body._id).should.equal(articleSaveRes.body._id);
-                        (articleInfoRes.body.title).should.equal(article.title);
-                        should.equal(articleInfoRes.body.user, undefined);
+                        (catInfoRes.body._id).should.equal(catSaveRes.body._id);
+                        (catInfoRes.body.title).should.equal(cat.title);
+                        should.equal(catInfoRes.body.user, undefined);
 
                         // Call the assertion callback
                         done();
@@ -301,16 +301,16 @@ describe('Article CRUD tests', function () {
     });
   });
 
-  it('should be able to get a single article if not signed in and verify the custom "isCurrentUserOwner" field is set to "false"', function (done) {
-    // Create new article model instance
-    var articleObj = new Article(article);
+  it('should be able to get a single cat if not signed in and verify the custom "isCurrentUserOwner" field is set to "false"', function (done) {
+    // Create new cat model instance
+    var catObj = new Cat(cat);
 
-    // Save the article
-    articleObj.save(function () {
-      request(app).get('/api/articles/' + articleObj._id)
+    // Save the cat
+    catObj.save(function () {
+      request(app).get('/api/cats/' + catObj._id)
         .end(function (req, res) {
           // Set assertion
-          res.body.should.be.instanceof(Object).and.have.property('title', article.title);
+          res.body.should.be.instanceof(Object).and.have.property('title', cat.title);
           // Assert the custom field "isCurrentUserOwner" is set to false for the un-authenticated User
           res.body.should.be.instanceof(Object).and.have.property('isCurrentUserOwner', false);
           // Call the assertion callback
@@ -319,15 +319,15 @@ describe('Article CRUD tests', function () {
     });
   });
 
-  it('should be able to get single article, that a different user created, if logged in & verify the "isCurrentUserOwner" field is set to "false"', function (done) {
+  it('should be able to get single cat, that a different user created, if logged in & verify the "isCurrentUserOwner" field is set to "false"', function (done) {
     // Create temporary user creds
     var _creds = {
-      usernameOrEmail: 'articleowner',
+      usernameOrEmail: 'catowner',
       password: 'M3@n.jsI$Aw3$0m3'
     };
 
-    // Create user that will create the Article
-    var _articleOwner = new User({
+    // Create user that will create the Cat
+    var _catOwner = new User({
       firstName: 'Full',
       lastName: 'Name',
       displayName: 'Full Name',
@@ -338,13 +338,13 @@ describe('Article CRUD tests', function () {
       roles: ['admin', 'user']
     });
 
-    _articleOwner.save(function (err, _user) {
+    _catOwner.save(function (err, _user) {
       // Handle save error
       if (err) {
         return done(err);
       }
 
-      // Sign in with the user that will create the Article
+      // Sign in with the user that will create the Cat
       agent.post('/api/auth/signin')
         .send(_creds)
         .expect(200)
@@ -357,20 +357,20 @@ describe('Article CRUD tests', function () {
           // Get the userId
           var userId = _user._id;
 
-          // Save a new article
-          agent.post('/api/articles')
-            .send(article)
+          // Save a new cat
+          agent.post('/api/cats')
+            .send(cat)
             .expect(200)
-            .end(function (articleSaveErr, articleSaveRes) {
-              // Handle article save error
-              if (articleSaveErr) {
-                return done(articleSaveErr);
+            .end(function (catSaveErr, catSaveRes) {
+              // Handle cat save error
+              if (catSaveErr) {
+                return done(catSaveErr);
               }
 
-              // Set assertions on new article
-              (articleSaveRes.body.title).should.equal(article.title);
-              should.exist(articleSaveRes.body.user);
-              should.equal(articleSaveRes.body.user._id, userId);
+              // Set assertions on new cat
+              (catSaveRes.body.title).should.equal(cat.title);
+              should.exist(catSaveRes.body.user);
+              should.equal(catSaveRes.body.user._id, userId);
 
               // now signin with the test suite user
               agent.post('/api/auth/signin')
@@ -382,20 +382,20 @@ describe('Article CRUD tests', function () {
                     return done(err);
                   }
 
-                  // Get the article
-                  agent.get('/api/articles/' + articleSaveRes.body._id)
+                  // Get the cat
+                  agent.get('/api/cats/' + catSaveRes.body._id)
                     .expect(200)
-                    .end(function (articleInfoErr, articleInfoRes) {
-                      // Handle article error
-                      if (articleInfoErr) {
-                        return done(articleInfoErr);
+                    .end(function (catInfoErr, catInfoRes) {
+                      // Handle cat error
+                      if (catInfoErr) {
+                        return done(catInfoErr);
                       }
 
                       // Set assertions
-                      (articleInfoRes.body._id).should.equal(articleSaveRes.body._id);
-                      (articleInfoRes.body.title).should.equal(article.title);
+                      (catInfoRes.body._id).should.equal(catSaveRes.body._id);
+                      (catInfoRes.body.title).should.equal(cat.title);
                       // Assert that the custom field "isCurrentUserOwner" is set to false since the current User didn't create it
-                      (articleInfoRes.body.isCurrentUserOwner).should.equal(false);
+                      (catInfoRes.body.isCurrentUserOwner).should.equal(false);
 
                       // Call the assertion callback
                       done();
@@ -408,7 +408,7 @@ describe('Article CRUD tests', function () {
 
   afterEach(function (done) {
     User.remove().exec(function () {
-      Article.remove().exec(done);
+      Cat.remove().exec(done);
     });
   });
 });

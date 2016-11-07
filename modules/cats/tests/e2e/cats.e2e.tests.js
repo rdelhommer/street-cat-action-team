@@ -1,10 +1,10 @@
 'use strict';
 
-describe('Articles E2E Tests:', function () {
-  describe('Test articles page', function () {
+describe('Cats E2E Tests:', function () {
+  describe('Test cats page', function () {
     it('Should report missing credentials', function () {
-      browser.get('http://localhost:3001/articles');
-      expect(element.all(by.repeater('article in articles')).count()).toEqual(0);
+      browser.get('http://localhost:3001/cats');
+      expect(element.all(by.repeater('cat in cats')).count()).toEqual(0);
     });
   });
 });

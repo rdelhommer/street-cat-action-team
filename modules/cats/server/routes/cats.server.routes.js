@@ -3,21 +3,21 @@
 /**
  * Module dependencies
  */
-var articlesPolicy = require('../policies/articles.server.policy'),
-  articles = require('../controllers/articles.server.controller');
+var catsPolicy = require('../policies/cats.server.policy'),
+  cats = require('../controllers/cats.server.controller');
 
 module.exports = function (app) {
-  // Articles collection routes
-  app.route('/api/articles').all(articlesPolicy.isAllowed)
-    .get(articles.list)
-    .post(articles.create);
+  // Cats collection routes
+  app.route('/api/cats').all(catsPolicy.isAllowed)
+    .get(cats.list)
+    .post(cats.create);
 
-  // Single article routes
-  app.route('/api/articles/:articleId').all(articlesPolicy.isAllowed)
-    .get(articles.read)
-    .put(articles.update)
-    .delete(articles.delete);
+  // Single cat routes
+  app.route('/api/cats/:catId').all(catsPolicy.isAllowed)
+    .get(cats.read)
+    .put(cats.update)
+    .delete(cats.delete);
 
-  // Finish by binding the article middleware
-  app.param('articleId', articles.articleByID);
+  // Finish by binding the cat middleware
+  app.param('catId', cats.catByID);
 };

@@ -7,28 +7,23 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 /**
- * Article Schema
+ * Cat Schema
  */
-var ArticleSchema = new Schema({
+var CatSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
   },
-  title: {
+  name: {
     type: String,
     default: '',
     trim: true,
-    required: 'Title cannot be blank'
+    required: 'Name cannot be blank'
   },
-  content: {
-    type: String,
-    default: '',
-    trim: true
-  },
-  user: {
+  submittingUser: {
     type: Schema.ObjectId,
     ref: 'User'
   }
 });
 
-mongoose.model('Article', ArticleSchema);
+mongoose.model('Cat', CatSchema);

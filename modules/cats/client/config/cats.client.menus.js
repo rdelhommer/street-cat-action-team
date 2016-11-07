@@ -2,23 +2,23 @@
   'use strict';
 
   angular
-    .module('articles')
+    .module('cats')
     .run(menuConfig);
 
   menuConfig.$inject = ['menuService'];
 
   function menuConfig(menuService) {
     menuService.addMenuItem('topbar', {
-      title: 'Articles',
-      state: 'articles',
+      title: 'Cats',
+      state: 'cats',
       type: 'dropdown',
       roles: ['*']
     });
 
     // Add the dropdown list item
-    menuService.addSubMenuItem('topbar', 'articles', {
-      title: 'List Articles',
-      state: 'articles.list',
+    menuService.addSubMenuItem('topbar', 'cats', {
+      title: 'List Cats',
+      state: 'cats.list',
       roles: ['*']
     });
   }

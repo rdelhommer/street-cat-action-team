@@ -2,15 +2,15 @@
   'use strict';
 
   angular
-    .module('articles')
-    .controller('ArticlesController', ArticlesController);
+    .module('cats')
+    .controller('CatsController', CatsController);
 
-  ArticlesController.$inject = ['$scope', 'articleResolve', 'Authentication'];
+  CatsController.$inject = ['$scope', 'catResolve', 'Authentication'];
 
-  function ArticlesController($scope, article, Authentication) {
+  function CatsController($scope, cat, Authentication) {
     var vm = this;
 
-    vm.article = article;
+    vm.cat = cat;
     vm.authentication = Authentication;
 
   }

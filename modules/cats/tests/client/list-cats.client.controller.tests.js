@@ -1,15 +1,15 @@
 (function () {
   'use strict';
 
-  describe('Articles List Controller Tests', function () {
+  describe('Cats List Controller Tests', function () {
     // Initialize global variables
-    var ArticlesListController,
+    var CatsListController,
       $scope,
       $httpBackend,
       $state,
       Authentication,
-      ArticlesService,
-      mockArticle;
+      CatsService,
+      mockCat;
 
     // The $resource service augments the response object with methods for updating and deleting the resource.
     // If we were to use the standard toEqual matcher, our tests would fail because the test values would not match
@@ -36,7 +36,7 @@
     // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
     // This allows us to inject a service but then attach it to a variable
     // with the same name as the service.
-    beforeEach(inject(function ($controller, $rootScope, _$state_, _$httpBackend_, _Authentication_, _ArticlesService_) {
+    beforeEach(inject(function ($controller, $rootScope, _$state_, _$httpBackend_, _Authentication_, _CatsService_) {
       // Set a new global scope
       $scope = $rootScope.$new();
 
@@ -44,12 +44,12 @@
       $httpBackend = _$httpBackend_;
       $state = _$state_;
       Authentication = _Authentication_;
-      ArticlesService = _ArticlesService_;
+      CatsService = _CatsService_;
 
-      // create mock article
-      mockArticle = new ArticlesService({
+      // create mock cat
+      mockCat = new CatsService({
         _id: '525a8422f6d0f87f0e407a33',
-        title: 'An Article about MEAN',
+        title: 'An Cat about MEAN',
         content: 'MEAN rocks!'
       });
 
@@ -58,8 +58,8 @@
         roles: ['user']
       };
 
-      // Initialize the Articles List controller.
-      ArticlesListController = $controller('ArticlesListController as vm', {
+      // Initialize the Cats List controller.
+      CatsListController = $controller('CatsListController as vm', {
         $scope: $scope
       });
 
@@ -68,15 +68,15 @@
     }));
 
     describe('Instantiate', function () {
-      var mockArticleList;
+      var mockCatList;
 
       beforeEach(function () {
-        mockArticleList = [mockArticle, mockArticle];
+        mockCatList = [mockCat, mockCat];
       });
 
-      it('should send a GET request and return all articles', inject(function (ArticlesService) {
+      it('should send a GET request and return all cats', inject(function (CatsService) {
         // Set POST response
-        $httpBackend.expectGET('/api/articles').respond(mockArticleList);
+        $httpBackend.expectGET('/api/cats').respond(mockCatList);
 
         // Ignore parent template get on state transition
         $httpBackend.whenGET('/modules/core/client/views/home.client.view.html').respond(200, '');
@@ -84,9 +84,9 @@
         $httpBackend.flush();
 
         // Test form inputs are reset
-        expect($scope.vm.articles.length).toEqual(2);
-        expect($scope.vm.articles[0]).toEqual(mockArticle);
-        expect($scope.vm.articles[1]).toEqual(mockArticle);
+        expect($scope.vm.cats.length).toEqual(2);
+        expect($scope.vm.cats[0]).toEqual(mockCat);
+        expect($scope.vm.cats[1]).toEqual(mockCat);
 
       }));
     });
