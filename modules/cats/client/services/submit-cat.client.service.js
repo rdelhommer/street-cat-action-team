@@ -19,7 +19,17 @@
           catObj.pictureUrl.push(pictureUrl);
         }
 
-        return $http.post('/api/cats', catObj);
+        var res = $http.post('/api/cats', catObj);
+
+        res.success(function(data, status, headers, config) {
+          // TODO: redirect to the new cat's page
+        });
+
+        res.error(function(data, status, headers, config) {
+          // TODO: Use notification to show failure like the notification when
+          // TODO cont: profile pic upload fails
+          $log.error('failure message: ' + JSON.stringify({ data: data }));
+        });
       }
     };
   }

@@ -4,7 +4,5 @@
   </div>
   <form ng-submit="vm.submitCat()">
     Name: <input type="text" ng-model="vm.name" name="name" autofocus /><br />
-    <picture-uploader alt-text="cat picture" picture-url="" upload-api-url="{{vm.pictureUploadApiUrl}}"></picture-uploader>
   </form>
-  <picture-uploader ng-show="vm.catSubmitted" alt-text="cat picture" picture-url="" upload-api-url="{{vm.pictureUploadApiUrl}}"></picture-uploader>
 </section>

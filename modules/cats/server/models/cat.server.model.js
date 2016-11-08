@@ -18,6 +18,8 @@ var PictureSchema = new Schema({
   }
 });
 
+var PictureSchema = mongoose.model('Picture').schema;
+
 /**
  * Cat Schema
  */
@@ -50,5 +52,4 @@ var CatSchema = new Schema({
   }
 });
 
-mongoose.model('Picture', PictureSchema);
 mongoose.model('Cat', CatSchema);

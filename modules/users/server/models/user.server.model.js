@@ -47,6 +47,8 @@ var validateUsername = function(username) {
   );
 };
 
+var PictureSchema = mongoose.model('Picture').schema;
+
 /**
  * User Schema
  */
@@ -124,6 +126,10 @@ var UserSchema = new Schema({
   },
   resetPasswordExpires: {
     type: Date
+  },
+  pictures: {
+    type: [PictureSchema],
+    default: []
   }
 });
 
