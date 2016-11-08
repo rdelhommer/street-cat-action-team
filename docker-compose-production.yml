@@ -5,7 +5,7 @@ services:
     build:
      context: .
      dockerfile: Dockerfile-production
-    container_name: meanjs
+    container_name: scat
     ports:
      - "8443:8443"
     environment:

@@ -42,7 +42,7 @@ module.exports = {
   },
   logo: 'modules/core/client/img/brand/logo.png',
   favicon: 'modules/core/client/img/brand/favicon.ico',
-  illegalUsernames: ['meanjs', 'administrator', 'password', 'admin', 'user',
+  illegalUsernames: ['scat', 'administrator', 'password', 'admin', 'user',
     'unknown', 'anonymous', 'null', 'undefined', 'api'
   ],
   uploads: {

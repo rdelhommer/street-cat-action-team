@@ -1,8 +1,8 @@
 # Build:
-# docker build -t meanjs/mean -f Dockerfile-production .
+# docker build -t scat/mean -f Dockerfile-production .
 #
 # Run:
-# docker run -it meanjs/mean
+# docker run -it scat/mean
 #
 # Compose:
 # docker-compose -f docker-compose-production.yml up -d

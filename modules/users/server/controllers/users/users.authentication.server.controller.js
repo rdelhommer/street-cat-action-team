@@ -169,7 +169,7 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
 
             // Email intentionally added later to allow defaults (sparse settings) to be applid.
             // Handles case where no email is supplied.
-            // See comment: https://github.com/meanjs/mean/pull/1495#issuecomment-246090193
+            // See comment: https://github.com/scat/mean/pull/1495#issuecomment-246090193
             user.email = providerUserProfile.email;
 
             // And save the user

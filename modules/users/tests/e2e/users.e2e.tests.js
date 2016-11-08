@@ -4,7 +4,7 @@ describe('Users E2E Tests:', function () {
   var user1 = {
     firstName: 'test',
     lastName: 'user',
-    email: 'test.user@meanjs.com',
+    email: 'test.user@scat.com',
     username: 'testUser',
     password: 'P@$$w0rd!!'
   };
@@ -12,7 +12,7 @@ describe('Users E2E Tests:', function () {
   var user2 = {
     firstName: 'test',
     lastName: 'user2',
-    email: 'test.user2@meanjs.com',
+    email: 'test.user2@scat.com',
     username: 'testUser2',
     password: 'P@$$w0rd!!'
   };
@@ -210,7 +210,7 @@ describe('Users E2E Tests:', function () {
       // Enter Last Name
       element(by.model('vm.credentials.lastName')).sendKeys(user2.lastName);
       // Enter Email
-      element(by.model('vm.credentials.email')).sendKeys('someemail@meanjs.com');
+      element(by.model('vm.credentials.email')).sendKeys('someemail@scat.com');
       // Enter Username
       element(by.model('vm.credentials.username')).sendKeys('log.in');
       // Enter Password

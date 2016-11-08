@@ -1,7 +1,7 @@
 {
-  "name": "meanjs",
+  "name": "scat",
   "description": "Fullstack JavaScript with MongoDB, Express, AngularJS, and Node.js.",
-  "homepage": "http://meanjs.org/",
+  "homepage": "http://scat.org/",
   "license": "MIT",
   "dependencies": {
     "angular": "~1.5.0",

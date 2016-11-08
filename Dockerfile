@@ -1,8 +1,8 @@
 # Build:
-# docker build -t meanjs/mean .
+# docker build -t scat/mean .
 #
 # Run:
-# docker run -it meanjs/mean
+# docker run -it scat/mean
 #
 # Compose:
 # docker-compose up -d
