@@ -5,9 +5,11 @@
     .module('users')
     .controller('ChangeProfilePictureController', ChangeProfilePictureController);
 
-  ChangeProfilePictureController.$inject = [];
+  ChangeProfilePictureController.$inject = ['Authentication'];
 
-  function ChangeProfilePictureController() {
+  function ChangeProfilePictureController(Authentication) {
     var vm = this;
+    vm.user = Authentication.user;
+    vm.pictureUploadApiUrl = '/api/users/picture';
   }
 }());

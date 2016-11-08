@@ -5,18 +5,15 @@
     .module('core')
     .controller('PictureUploaderController', PictureUploaderController);
 
-  PictureUploaderController.$inject = ['$timeout', 'Authentication', 'Upload', 'Notification'];
+  PictureUploaderController.$inject = ['$log', '$timeout', 'Upload', 'Notification'];
 
-  function PictureUploaderController($timeout, Authentication, Upload, Notification) {
+  function PictureUploaderController($log, $timeout, Upload, Notification) {
     var vm = this;
-
-    vm.user = Authentication.user;
     vm.fileSelected = false;
 
     vm.upload = function (dataUrl, name) {
-
       Upload.upload({
-        url: '/api/users/picture',
+        url: vm.uploadApiUrl,
         data: {
           newPicture: Upload.dataUrltoBlob(dataUrl, name)
         }
@@ -30,14 +27,11 @@
         vm.progress = parseInt(100.0 * evt.loaded / evt.total, 10);
       });
     };
-
+    $log.log(vm);
     // Called after the user has successfully uploaded a new picture
     function onSuccessItem(response) {
       // Show success message
       Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Upload picture successful!' });
-
-      // Populate user object
-      vm.user = Authentication.user = response;
 
       // Reset form
       vm.fileSelected = false;

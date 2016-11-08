@@ -19,15 +19,7 @@
           catObj.pictureUrl.push(pictureUrl);
         }
 
-        var res = $http.post('/api/cats', catObj);
-
-        res.success(function(data, status, headers, config) {
-          // TODO: Do something on success
-        });
-
-        res.error(function(data, status, headers, config) {
-          $log.error('failure message: ' + JSON.stringify({ data: data }));
-        });
+        return $http.post('/api/cats', catObj);
       }
     };
   }

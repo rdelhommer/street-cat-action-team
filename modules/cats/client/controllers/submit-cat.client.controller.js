@@ -5,14 +5,25 @@
     .module('cats')
     .controller('CatsSubmitController', CatsSubmitController);
 
-  CatsSubmitController.$inject = ['$log', 'SubmitCatService'];
+  CatsSubmitController.$inject = ['SubmitCatService'];
 
-  function CatsSubmitController($log, SubmitCatService) {
+  function CatsSubmitController(SubmitCatService) {
     var vm = this;
     vm.name = '';
-    vm.pictureUrl = '';
+    vm.catSubmitted = false;
+    vm.pictureUploadApiUrl = '';
+
     vm.submitCat = function() {
-      SubmitCatService.addCat(vm.name, vm.pictureUrl);
+      var res = SubmitCatService.addCat(vm.name);
+
+      res.success(function(data, status, headers, config) {
+        vm.catSubmitted = true;
+      });
+
+      res.error(function(data, status, headers, config) {
+        $log.error('failure message: ' + JSON.stringify({ data: data }));
+        vm.catSubmitted = false;
+      });
     };
   }
 }());
