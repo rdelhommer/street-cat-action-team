@@ -12,7 +12,7 @@
     vm.name = '';
 
     vm.submitCat = function() {
-      var res = SubmitCatService.addCat(vm.name);
+      SubmitCatService.addCat(vm.name);
     };
   }
 }());

@@ -8,8 +8,8 @@
         Posted on
         <span ng-bind="cat.created | date:'mediumDate'"></span>
         by
-        <span ng-if="cat.user" ng-bind="cat.user.displayName"></span>
-        <span ng-if="!cat.user">Deleted User</span>
+        <span ng-if="cat.submittingUser" ng-bind="cat.submittingUser.displayName"></span>
+        <span ng-if="!cat.submittingUser">Deleted User</span>
       </small>
       <h4 class="list-group-item-heading" ng-bind="cat.title"></h4>
       <p class="list-group-item-text" ng-bind="cat.content"></p>

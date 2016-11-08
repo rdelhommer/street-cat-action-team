@@ -14,7 +14,7 @@
         <span data-ng-bind="cat.created | date:'mediumDate'"></span>
         by
         <span ng-if="cat.user" ng-bind="cat.user.displayName"></span>
-        <span ng-if="!cat.user">Deleted User</span>
+        <span ng-if="!cat.submittingUser">Deleted User</span>
       </small>
       <h4 class="list-group-item-heading" data-ng-bind="cat.title"></h4>
       <p class="list-group-item-text" data-ng-bind="cat.content"></p>

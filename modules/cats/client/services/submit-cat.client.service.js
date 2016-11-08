@@ -5,9 +5,9 @@
     .module('cats.services')
     .factory('SubmitCatService', SubmitCatService);
 
-  SubmitCatService.$inject = ['$log', '$http'];
+  SubmitCatService.$inject = ['$log', '$http', '$state'];
 
-  function SubmitCatService($log, $http) {
+  function SubmitCatService($log, $http, $state) {
     return {
       addCat: function(name, pictureUrl) {
         var catObj = {
@@ -22,7 +22,7 @@
         var res = $http.post('/api/cats', catObj);
 
         res.success(function(data, status, headers, config) {
-          // TODO: redirect to the new cat's page
+          $state.go('cats.view', { 'catId': data._id });
         });
 
         res.error(function(data, status, headers, config) {
