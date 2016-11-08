@@ -17,7 +17,7 @@
       controllerAs: 'vm',
       templateUrl: '/modules/core/client/views/picture-uploader.client.view.html'
     };
-    
+
     return directive;
   }
 }());

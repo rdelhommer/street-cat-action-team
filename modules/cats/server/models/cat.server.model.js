@@ -6,18 +6,6 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-var PictureSchema = new Schema({
-  imageURL: {
-    type: String,
-    default: '',
-    required: 'Picture URL is required'
-  },
-  submittingUser: {
-    type: Schema.ObjectId,
-    ref: 'User'
-  }
-});
-
 var PictureSchema = mongoose.model('Picture').schema;
 
 /**
