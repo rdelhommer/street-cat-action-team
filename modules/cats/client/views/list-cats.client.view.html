@@ -2,17 +2,21 @@
   <div class="page-header">
     <h1>Cats</h1>
   </div>
-  <div class="list-group">
-    <a ng-repeat="cat in vm.cats" ui-sref="cats.view({ catId: cat._id })" class="list-group-item">
-      <small class="list-group-item-text">
-        Posted on
-        <span ng-bind="cat.created | date:'mediumDate'"></span>
-        by
-        <span ng-if="cat.submittingUser" ng-bind="cat.submittingUser.displayName"></span>
-        <span ng-if="!cat.submittingUser">Deleted User</span>
-      </small>
-      <h4 class="list-group-item-heading" ng-bind="cat.title"></h4>
-      <p class="list-group-item-text" ng-bind="cat.content"></p>
-    </a>
+
+  <div class="row">
+    <div class="col-sm-6 col-md-4" ng-repeat="cat in vm.cats">
+      <div class="inner">
+        <a ui-sref="cats.view({ catId: cat._id })" class="list-group-item">
+          <center>
+            <img src="" alt="{{cat.name}}">
+          </center>
+          <div class="caption">
+            <center>
+              <h3>{{cat.name}}</h3>
+            </center>
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
