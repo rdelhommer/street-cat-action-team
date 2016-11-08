@@ -20,6 +20,10 @@
       createOrUpdate: function () {
         var cat = this;
         return createOrUpdate(cat);
+      },
+      getPicture: function () {
+        var cat = this;
+        return getPicture(cat);
       }
     });
 
@@ -43,6 +47,14 @@
         // Handle error internally
         handleError(error);
       }
+    }
+
+    function getPicture(cat) {
+      if(cat.pictures.length == 0) {
+        return '/modules/cats/client/img/default.png';
+      }
+
+      return cat.pictures[0].imageURL;
     }
 
     function handleError(error) {

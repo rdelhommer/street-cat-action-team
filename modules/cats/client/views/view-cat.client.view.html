@@ -1,15 +1,10 @@
 <section>
   <div class="page-header">
-    <h1 ng-bind="vm.cat.title"></h1>
+    <h1>
+      <img ng-src="/modules/cats/client/img/default.png">
+      {{vm.cat.name}}
+    </h1>
   </div>
-  <small>
-    <em class="text-muted">
-      Posted on
-      <span ng-bind="vm.cat.created | date:'mediumDate'"></span>
-      by
-      <span ng-if="vm.cat.user" ng-bind="vm.cat.user.displayName"></span>
-      <span ng-if="!vm.cat.user">Deleted User</span>
-    </em>
-  </small>
-  <p class="lead" ng-bind="vm.cat.content"></p>
+
+  <picture-uploader></picture-uploader>
 </section>

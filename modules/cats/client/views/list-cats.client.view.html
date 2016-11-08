@@ -8,7 +8,7 @@
       <div class="inner">
         <a ui-sref="cats.view({ catId: cat._id })" class="list-group-item">
           <center>
-            <img ng-src="{{vm.getPicture(cat)}}" alt="{{cat.name}}">
+            <img ng-src="{{cat.getPicture()}}" alt="{{cat.name}}">
           </center>
           <div class="caption">
             <center>
