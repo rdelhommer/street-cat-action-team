@@ -7,29 +7,45 @@
   var mongooseAdapter = require('../../../core/server/adapters/mongoose.server.adapter.js');
 
   exports.create = function (req, res) {
-    var picture = mongooseAdapter.create('Picture', req.body);
+    var upload = multer(config.uploads.profileUpload).single('newPicture');
+    var profileUploadFileFilter = require(path.resolve('./config/lib/multer')).profileUploadFileFilter;
+    upload.fileFilter = profileUploadFileFilter;
 
-    // Save the picture and then add to the user
-    mongooseAdapter.save(picture, function (pictureErr) {
-      if (pictureErr) {
+    // Upload the image
+    upload(req, res, function (uploadErr) {
+      if (uploadErr) {
         return res.status(422).send({
-          message: errorHandler.getErrorMessage(pictureErr)
+          message: errorHandler.getErrorMessage(uploadErr)
         });
       }
 
-      mongooseAdapter.update(
-        'User',
-        { '_id': req.user },
-        { '$push': { 'pictures': picture } },
-        function (err, numAffected) {
-          if (err) {
-            return res.status(422).send({
-              message: errorHandler.getErrorMessage(err)
-            });
-          }
+      // Add the url of the saved image to the req body and create the picture
+      req.body.imageUrl = config.uploads.catUpload.dest + req.file.filename;
+      var picture = mongooseAdapter.create('Picture', req.body);
 
-          return res.json(picture);
-        });
+      // Save the picture
+      mongooseAdapter.save(picture, function (pictureErr) {
+        if (pictureErr) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(pictureErr)
+          });
+        }
+
+        // Add the saved picture reference to the user
+        mongooseAdapter.update(
+          'User',
+          { '_id': req.user },
+          { '$push': { 'pictures': picture } },
+          function (err, numAffected) {
+            if (err) {
+              return res.status(422).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            }
+
+            return res.json(picture);
+          });
+      });
     });
   };
 

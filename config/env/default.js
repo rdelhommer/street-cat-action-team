@@ -51,6 +51,12 @@ module.exports = {
       limits: {
         fileSize: 1 * 1024 * 1024 // Max file size in bytes (1 MB)
       }
+    },
+    catUpload: {
+      dest: './modules/cats/client/img/', // Profile upload destination path
+      limits: {
+        fileSize: 1 * 1024 * 1024 // Max file size in bytes (1 MB)
+      }
     }
   },
   shared: {
