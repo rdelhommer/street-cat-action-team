@@ -11,7 +11,7 @@
       type: Date,
       default: Date.now
     },
-    name: {
+    catName: {
       type: String,
       trim: true,
       required: 'Name cannot be blank'

@@ -3,92 +3,79 @@
 
   var path = require('path');
   var mongoose = require('mongoose');
-  var Cat = mongoose.model('Cat');
   var errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
+  var mongooseAdapter = require('../../../core/server/adapters/mongoose.server.adapter.js');
 
   exports.create = function (req, res) {
-    var cat = new Cat(req.body);
+    var cat = mongooseAdapter.create('Cat', req.body);
     cat.submittingUser = req.user;
 
-    cat.save(function (err) {
+    mongooseAdapter.save(cat, function (err) {
       if (err) {
         return res.status(422).send({
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        res.json(cat);
+        return res.json(cat);
       }
     });
   };
 
   exports.read = function (req, res) {
-    // convert mongoose document to JSON
-    var cat = req.cat ? req.cat.toJSON() : {};
-
-    // Add a custom field to the Cat, for determining if the current User is the "owner".
-    // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Cat model.
-    cat.isCurrentUserOwner = !!(req.user && cat.user && cat.user._id.toString() === req.user._id.toString());
-
-    res.json(cat);
+    return res.json(req.cat ? req.cat : {});
   };
 
   exports.update = function (req, res) {
-    var cat = req.cat;
+    req.cat.catName = req.body.catName;
 
-    cat.name = req.body.name;
-    cat.pictures.concat(req.body.pictures);
-
-    cat.save(function (err) {
+    mongooseAdapter.save(req.cat, function (err) {
       if (err) {
         return res.status(422).send({
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        res.json(cat);
+        return res.json(req.cat);
       }
     });
   };
 
   exports.delete = function (req, res) {
-    var cat = req.cat;
-
-    cat.remove(function (err) {
+    mongooseAdapter.remove(req.cat, function (err) {
       if (err) {
         return res.status(422).send({
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        res.json(cat);
+        return res.json(req.cat);
       }
     });
   };
 
   exports.list = function (req, res) {
-    Cat.find().sort('-created').populate('user', 'displayName').exec(function (err, cats) {
+    mongooseAdapter.find('Cat').sort('-created').exec(function (err, cats) {
       if (err) {
         return res.status(422).send({
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        res.json(cats);
+        return res.json(cats);
       }
     });
   };
 
   exports.catByID = function (req, res, next, id) {
-
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).send({
-        message: 'Cat is invalid'
+        message: 'Cat ID is invalid'
       });
     }
 
-    Cat.findById(id).populate('user', 'displayName').exec(function (err, cat) {
+    mongooseAdapter.findById('Cat', id).exec(function (err, cat) {
       if (err) {
         return next(err);
       } else if (!cat) {
         return res.status(404).send({
-          message: 'No cat with that identifier has been found'
+          message: 'No cat with that ID has been found'
         });
       }
       req.cat = cat;
