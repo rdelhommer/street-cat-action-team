@@ -1,25 +1,29 @@
-'use strict';
+(function () {
+  'use strict';
 
-/**
- * Module dependencies
- */
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+  var mongoose = require('mongoose');
+  var Schema = mongoose.Schema;
 
-var PictureSchema = new Schema({
-  imageURL: {
-    type: String,
-    default: '',
-    required: 'Picture URL is required'
-  },
-  submittingUser: {
-    type: Schema.ObjectId,
-    ref: 'User'
-  },
-  cat: {
-    type: Schema.ObjectId,
-    ref: 'Cat'
-  }
-});
+  var PictureSchema = new Schema({
+    imageUrl: {
+      type: String,
+      required: 'Image URL is required'
+    },
+    submittingUser: {
+      type: Schema.ObjectId,
+      ref: 'User',
+      required: 'Picture must have a submitting user'
+    },
+    cat: {
+      type: Schema.ObjectId,
+      ref: 'Cat',
+      required: 'Picture must be linked to a cat'
+    },
+    submissionDate: {
+      type: Date,
+      default: Date.now
+    },
+  });
 
-mongoose.model('Picture', PictureSchema);
+  mongoose.model('Picture', PictureSchema);
+}());
