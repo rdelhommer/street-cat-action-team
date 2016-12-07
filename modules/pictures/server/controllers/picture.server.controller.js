@@ -38,14 +38,27 @@
   };
 
   exports.delete = function (req, res) {
-    mongooseAdapter.remove(req.picture, function (err) {
-      if (err) {
+    // Remove the picture and then remove from the user
+    mongooseAdapter.remove(req.picture, function (removeErr) {
+      if (removeErr) {
         return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
+          message: errorHandler.getErrorMessage(removeErr)
         });
-      } else {
-        return res.json(req.picture);
       }
+
+      mongooseAdapter.update(
+        'User',
+        { '_id': req.user },
+        { '$pull': { 'pictures': { '_id': req.picture.id } } },
+        function (updateErr, numAffected) {
+          if (updateErr) {
+            return res.status(422).send({
+              message: errorHandler.getErrorMessage(updateErr)
+            });
+          }
+
+          return res.json(picture);
+        });
     });
   };
 
