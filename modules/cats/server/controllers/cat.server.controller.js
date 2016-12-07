@@ -78,8 +78,10 @@
           message: 'No cat with that ID has been found'
         });
       }
+
       req.cat = cat;
-      next();
+
+      return next();
     });
   };
 }());
