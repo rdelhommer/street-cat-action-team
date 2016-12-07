@@ -50,7 +50,7 @@
     }
 
     function getPicture(cat) {
-      if(cat.pictures.length == 0) {
+      if (cat.pictures.length === 0) {
         return '/modules/cats/client/img/default.png';
       }
 

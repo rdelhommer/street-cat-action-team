@@ -1,43 +1,26 @@
-'use strict';
+(function () {
+  'use strict';
 
-/**
- * Module dependencies
- */
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+  var mongoose = require('mongoose');
+  var Schema = mongoose.Schema;
 
-var PictureSchema = mongoose.model('Picture').schema;
+  var PictureSchema = mongoose.model('Picture').schema;
 
-/**
- * Cat Schema
- */
-var CatSchema = new Schema({
-  created: {
-    type: Date,
-    default: Date.now
-  },
-  name: {
-    type: String,
-    default: '',
-    trim: true,
-    required: 'Name cannot be blank'
-  },
-  likes: {
-    type: Array,
-    default: []
-  },
-  dislikes: {
-    type: Array,
-    default: []
-  },
-  pictures: {
-    type: [PictureSchema],
-    default: []
-  },
-  submittingUser: {
-    type: Schema.ObjectId,
-    ref: 'User'
-  }
-});
+  var CatSchema = new Schema({
+    created: {
+      type: Date,
+      default: Date.now
+    },
+    name: {
+      type: String,
+      trim: true,
+      required: 'Name cannot be blank'
+    },
+    submittingUser: {
+      type: Schema.ObjectId,
+      ref: 'User'
+    }
+  });
 
-mongoose.model('Cat', CatSchema);
+  mongoose.model('Cat', CatSchema);
+}());

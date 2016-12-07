@@ -1,72 +1,64 @@
-'use strict';
+(function () {
+  'use strict';
 
-/**
- * Module dependencies
- */
-var acl = require('acl');
+  var acl = require('acl');
 
-// Using the memory backend
-acl = new acl(new acl.memoryBackend());
+  acl = new acl(new acl.memoryBackend());
 
-/**
- * Invoke Cats Permissions
- */
-exports.invokeRolesPolicies = function () {
-  acl.allow([{
-    roles: ['admin'],
-    allows: [{
-      resources: '/api/cats',
-      permissions: '*'
+  exports.invokeRolesPolicies = function () {
+    acl.allow([{
+      roles: ['admin'],
+      allows: [{
+        resources: '/api/cats',
+        permissions: '*'
+      }, {
+        resources: '/api/cats/:catId',
+        permissions: '*'
+      }]
     }, {
-      resources: '/api/cats/:catId',
-      permissions: '*'
-    }]
-  }, {
-    roles: ['user'],
-    allows: [{
-      resources: '/api/cats',
-      permissions: ['get', 'post']
+      roles: ['user'],
+      allows: [{
+        resources: '/api/cats',
+        permissions: ['get', 'post']
+      }, {
+        resources: '/api/cats/:catId',
+        permissions: ['get']
+      }]
     }, {
-      resources: '/api/cats/:catId',
-      permissions: ['get']
-    }]
-  }, {
-    roles: ['guest'],
-    allows: [{
-      resources: '/api/cats',
-      permissions: ['get']
-    }, {
-      resources: '/api/cats/:catId',
-      permissions: ['get']
-    }]
-  }]);
-};
+      roles: ['guest'],
+      allows: [{
+        resources: '/api/cats',
+        permissions: ['get']
+      }, {
+        resources: '/api/cats/:catId',
+        permissions: ['get']
+      }]
+    }]);
+  };
 
-/**
- * Check If Cats Policy Allows
- */
-exports.isAllowed = function (req, res, next) {
-  var roles = (req.user) ? req.user.roles : ['guest'];
+  exports.isAllowed = function (req, res, next) {
+    var roles = (req.user) ? req.user.roles : ['guest'];
 
-  // If an cat is being processed and the current user created it then allow any manipulation
-  if (req.cat && req.user && req.cat.user && req.cat.user.id === req.user.id) {
-    return next();
-  }
-
-  // Check for user roles
-  acl.areAnyRolesAllowed(roles, req.route.path, req.method.toLowerCase(), function (err, isAllowed) {
-    if (err) {
-      // An authorization error occurred
-      return res.status(500).send('Unexpected authorization error');
-    } else {
-      if (isAllowed) {
-        // Access granted! Invoke next middleware
-        return next();
-      } else {
-        return res.status(403).json({
-          message: 'User is not authorized'
-        });
-      }
+    // If an cat is being processed and the current user created it then allow any manipulation
+    if (req.cat && req.user && req.cat.user && req.cat.user.id === req.user.id) {
+      return next();
     }
-  });
-};
+
+    // Check for user roles
+    acl.areAnyRolesAllowed(roles, req.route.path, req.method.toLowerCase(), function (err, isAllowed) {
+      if (err) {
+        // An authorization error occurred
+        return res.status(500).send('Unexpected authorization error');
+      } else {
+        if (isAllowed) {
+          // Access granted! Invoke next middleware
+          return next();
+        } else {
+          return res.status(403).json({
+            message: 'User is not authorized'
+          });
+        }
+      }
+    });
+  };
+}());
