@@ -8,39 +8,33 @@
 
   exports.create = function (req, res) {
     var picture = mongooseAdapter.create('Picture', req.body);
-    picture.submittingUser = req.user;
 
-    mongooseAdapter.save(picture, function (err) {
-      if (err) {
+    // Save the picture and then add to the user
+    mongooseAdapter.save(picture, function (pictureErr) {
+      if (pictureErr) {
         return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
+          message: errorHandler.getErrorMessage(pictureErr)
         });
-      } else {
-        return res.json(picture);
       }
+
+      mongooseAdapter.update(
+        'User',
+        { '_id': req.user },
+        { '$push': { 'pictures': picture } },
+        function (err, numAffected) {
+          if (err) {
+            return res.status(422).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          }
+
+          return res.json(picture);
+        });
     });
   };
 
   exports.read = function (req, res) {
     return res.json(req.picture ? req.picture : {});
-  };
-
-  exports.update = function (req, res) {
-    // If the image is changed, reset the likes, dislikes, and submission date
-    if (req.picture.imageUrl !== req.body.imageUrl) {
-      req.picture.imageUrl = req.body.imageUrl;
-      req.picture.submissionDate = new Date(Date.now());
-    }
-
-    mongooseAdapter.save(req.picture, function (err) {
-      if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        return res.json(req.picture);
-      }
-    });
   };
 
   exports.delete = function (req, res) {

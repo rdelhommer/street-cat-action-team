@@ -9,11 +9,6 @@
       type: String,
       required: 'Image URL is required'
     },
-    submittingUser: {
-      type: Schema.ObjectId,
-      ref: 'User',
-      required: 'Picture must have a submitting user'
-    },
     cat: {
       type: Schema.ObjectId,
       ref: 'Cat',

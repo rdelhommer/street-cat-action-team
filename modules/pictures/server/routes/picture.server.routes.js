@@ -13,7 +13,6 @@
     // Single cat routes
     app.route('/api/pictures/:pictureId').all(policy.isAllowed)
       .get(controller.read)
-      .put(controller.update)
       .delete(controller.delete);
 
     // Finish by binding the cat middleware
